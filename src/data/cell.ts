@@ -1,9 +1,4 @@
-enum CellValues {
-  start = "S",
-  end = "E",
-  wall = "#",
-  valid = ".",
-}
+import { CellValues } from "./types";
 
 export class Cell {
   private _value;
