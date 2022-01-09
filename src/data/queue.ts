@@ -3,8 +3,8 @@ import { Cell } from "./cell";
 export class Queue {
   private _elements = [];
 
-  public enqueue(element: Cell) {
-    this._elements.push(element);
+  public enqueue(number: number) {
+    this._elements.push(number);
   }
 
   public dequeue() {
