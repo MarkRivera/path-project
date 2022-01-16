@@ -67,25 +67,38 @@ describe("Create, Read, Update and Remove Start, End, and Wall cells", () => {
 describe("Create a maze and test if we can find the exit", () => {
   // Create the maze:
   let myGrid = new Grid();
+  const path = [
+    [0, 0],
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [4, 0],
+    [5, 0],
+    [6, 0],
+    [6, 1],
+    [6, 2],
+    [6, 3],
+    [6, 4],
+    [6, 5],
+    [6, 6],
+  ];
 
   beforeEach(() => {
     myGrid = new Grid();
     const startNodeRow = 0;
     const startNodeCol = 0;
-    const endNodeRow = 5;
-    const endNodeCol = 5;
+    const endNodeRow = 6;
+    const endNodeCol = 6;
 
     // Place start and end nodes:
     myGrid.changeCellValue(startNodeRow, startNodeCol, CellValues.start);
     myGrid.changeCellValue(endNodeRow, endNodeCol, CellValues.end);
-
-    console.log(myGrid);
   });
 
   it("Finds exit without walls", () => {
     // Print Grid:
     myGrid.displayGrid();
-    expect(myGrid.breadthFirstSearch()).toEqual("We found an exit!");
+    expect(myGrid.breadthFirstSearch()).toEqual(path);
   });
 
   it("Returns -1 because no exit can be reached", () => {
@@ -105,6 +118,6 @@ describe("Create a maze and test if we can find the exit", () => {
 
     // Remove a wall and find exit
     myGrid.changeCellValue(wallTwoRow, wallTwoCol, CellValues.valid);
-    expect(myGrid.breadthFirstSearch()).toEqual("We found an exit!");
+    myGrid.displayGrid();
   });
 });

@@ -7,6 +7,7 @@ export class Grid {
   private _rows = 10;
   private _numOfCells = this._rows * this._columns;
   private _grid = this.makeGrid();
+  private _prevGrid = this.makePrevGrid();
   private _rowQueue = new Queue();
   private _columnQueue = new Queue();
   private _startingPointRow;
@@ -27,6 +28,18 @@ export class Grid {
         this.addCell(i, j, map);
       }
     }
+    return map;
+  }
+
+  private makePrevGrid(): Array<boolean> {
+    let map = [];
+    for (let i = 0; i < this._columns; i++) {
+      map[i] = [];
+      for (let j = 0; j < this._rows; j++) {
+        map[i][j] = null;
+      }
+    }
+
     return map;
   }
 
@@ -52,6 +65,9 @@ export class Grid {
 
       // Mark cell as visited
       this._grid[nextRow][nextCol].isVisited = true;
+
+      // Track parent node of the next valid node
+      this._prevGrid[nextRow][nextCol] = [row, col];
     }
   }
 
@@ -76,13 +92,27 @@ export class Grid {
       if (this.grid[row][col].value === CellValues.end) {
         // Check to see if this cell is an end point
         this._reachedEnd = true; // if it is, mark as true then break
+        this.endPointRow = row;
+        this.endPointCol = col;
         break;
       }
       this.exploreNeighbors(row, col); // explore the cells next to it
     }
 
-    if (this._reachedEnd) return "We found an exit!"; // if an exit is found, say so
+    if (this._reachedEnd) return this.findPath(); // if an exit is found, say so
     return -1; // if not, return -1
+  }
+
+  public findPath() {
+    const path = [[this.endPointRow, this.endPointCol]];
+    let prev = this._prevGrid[this.endPointRow][this.endPointCol];
+
+    while (prev) {
+      path.push(prev);
+      prev = this._prevGrid[prev[0]][prev[1]];
+    }
+
+    return path.reverse();
   }
 
   private get startPointCol() {
